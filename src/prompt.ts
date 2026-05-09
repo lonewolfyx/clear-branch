@@ -1,6 +1,6 @@
 import type { IBranch } from './types'
 import * as process from 'node:process'
-import { cancel, isCancel, multiselect } from '@clack/prompts'
+import { cancel, confirm, isCancel, multiselect } from '@clack/prompts'
 
 function getLocationHint(location: IBranch['location']): string {
     if (location.local && location.remote)
@@ -10,7 +10,7 @@ function getLocationHint(location: IBranch['location']): string {
     return '远程'
 }
 
-export async function selectBranches(branches: IBranch[]): Promise<IBranch[] | null> {
+export async function selectBranches(branches: IBranch[]): Promise<IBranch[]> {
     const options = branches.map(branch => ({
         value: branch,
         label: branch.name,
@@ -29,4 +29,19 @@ export async function selectBranches(branches: IBranch[]): Promise<IBranch[] | n
     }
 
     return result as IBranch[]
+}
+
+export async function confirmBranches(branches: IBranch[]): Promise<boolean> {
+    const list = branches.map(b => `${b.name} {${getLocationHint(b.location)}}`).join('\n')
+
+    const result = await confirm({
+        message: `确认删除以下分支？\n${list}`,
+    }) as boolean
+
+    if (isCancel(result) || !result) {
+        cancel('操作已取消。')
+        process.exit(1)
+    }
+
+    return result
 }
