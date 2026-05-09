@@ -10,7 +10,12 @@
     "bugs": {
         "url": "https://github.com/lonewolfyx/clear-branch/issues"
     },
-    "keywords": [],
+    "keywords": [
+        "git",
+        "git-branch",
+        "cleanup",
+        "branch-management"
+    ],
     "exports": {
         ".": "./dist/cli.mjs",
         "./package.json": "./package.json"
