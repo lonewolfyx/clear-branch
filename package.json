@@ -40,12 +40,12 @@
         "access": "public"
     },
     "dependencies": {
-        "@clack/prompts": "^1.0.0",
-        "citty": "^0.2.0",
-        "defu": "^6.1.4",
+        "@clack/prompts": "^1.3.0",
+        "citty": "^0.2.2",
+        "defu": "^6.1.7",
         "find-up": "^8.0.0",
-        "glob": "^13.0.1",
-        "jiti": "^2.6.1"
+        "glob": "^13.0.6",
+        "jiti": "^2.7.0"
     },
     "devDependencies": {
         "@antfu/eslint-config": "^8.2.0",
