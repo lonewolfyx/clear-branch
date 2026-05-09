@@ -23,9 +23,6 @@ importers:
       glob:
         specifier: ^13.0.6
         version: 13.0.6
-      jiti:
-        specifier: ^2.7.0
-        version: 2.7.0
     devDependencies:
       '@antfu/eslint-config':
         specifier: ^8.2.0
@@ -39,6 +36,9 @@ importers:
       eslint:
         specifier: ^10.3.0
         version: 10.3.0(jiti@2.7.0)
+      jiti:
+        specifier: ^2.7.0
+        version: 2.7.0
       lint-staged:
         specifier: ^17.0.3
         version: 17.0.3
