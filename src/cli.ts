@@ -1,6 +1,7 @@
 import { createMain, defineCommand } from 'citty'
 import { args } from '@/args.ts'
 import { resolveConfig } from '@/config.ts'
+import { getBranches } from '@/git.ts'
 import { description, name, version } from '../package.json'
 
 const command = defineCommand({
@@ -18,6 +19,14 @@ const command = defineCommand({
     args,
     async run({ args }) {
         const config = resolveConfig(args)
+        const branches = await getBranches(config)
+
+        if (branches.length === 0) {
+            console.log('No branches found to delete.')
+            return
+        }
+
+        console.log(branches)
     },
 })
 

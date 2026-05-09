@@ -10,3 +10,11 @@ export type CommandArgs = ParsedArgs<DeepWriteable<typeof args>>
 export interface IConfig {
     cwd: string
 }
+
+export interface IBranch {
+    name: string
+    location: {
+        local: boolean
+        remote: boolean
+    }
+}
