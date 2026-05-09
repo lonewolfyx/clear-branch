@@ -19,13 +19,13 @@ export async function selectBranches(branches: IBranch[]): Promise<IBranch[]> {
     }))
 
     const result = await multiselect({
-        message: '选择需要删除的分支（空格选中，回车确认）',
+        message: 'Select branches to delete (space to select, enter to confirm)',
         options,
         required: false,
     })
 
     if (isCancel(result)) {
-        cancel('操作已取消。')
+        cancel('Operation cancelled.')
         process.exit(1)
     }
 
@@ -36,11 +36,11 @@ export async function confirmBranches(branches: IBranch[]): Promise<boolean> {
     const list = branches.map(b => `${b.name} {${getLocationHint(b.location)}}`).join('\n')
 
     const result = await confirm({
-        message: `确认删除以下分支？\n${list}`,
+        message: `Confirm deletion of the following branches?\n${list}`,
     }) as boolean
 
     if (isCancel(result) || !result) {
-        cancel('操作已取消。')
+        cancel('Operation cancelled.')
         process.exit(1)
     }
 
@@ -49,16 +49,16 @@ export async function confirmBranches(branches: IBranch[]): Promise<boolean> {
 
 export async function deleteBranches(config: IConfig, branches: IBranch[]): Promise<void> {
     const bar = progress({})
-    bar.start('正在删除分支...')
+    bar.start('Deleting branches...')
 
     for (const branch of branches) {
         try {
             await deleteBranch(config, branch)
         }
         finally {
-            bar.advance(1, `${branch.name} 删除`)
+            bar.advance(1, `${branch.name} deleted`)
         }
     }
 
-    bar.stop('删除完成。')
+    bar.stop('Deletion completed.')
 }
