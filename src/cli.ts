@@ -2,7 +2,7 @@ import { createMain, defineCommand } from 'citty'
 import { args } from '@/args.ts'
 import { resolveConfig } from '@/config.ts'
 import { getBranches } from '@/git.ts'
-import { confirmBranches, selectBranches } from '@/prompt.ts'
+import { confirmBranches, deleteBranches, selectBranches } from '@/prompt.ts'
 import { description, name, version } from '../package.json'
 
 const command = defineCommand({
@@ -30,6 +30,9 @@ const command = defineCommand({
         const selected = await selectBranches(branches)
 
         const confirmed = await confirmBranches(selected)
+
+        if (confirmed)
+            await deleteBranches(config, selected)
     },
 })
 

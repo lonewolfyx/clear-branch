@@ -1,13 +1,14 @@
-import type { IBranch } from './types'
+import type { IBranch, IConfig } from './types'
 import * as process from 'node:process'
-import { cancel, confirm, isCancel, multiselect } from '@clack/prompts'
+import { cancel, confirm, isCancel, multiselect, progress } from '@clack/prompts'
+import { deleteBranch } from '@/git.ts'
 
 function getLocationHint(location: IBranch['location']): string {
     if (location.local && location.remote)
-        return '本地 & 远程'
+        return 'local & remote'
     if (location.local)
-        return '本地'
-    return '远程'
+        return 'local'
+    return 'remote'
 }
 
 export async function selectBranches(branches: IBranch[]): Promise<IBranch[]> {
@@ -44,4 +45,20 @@ export async function confirmBranches(branches: IBranch[]): Promise<boolean> {
     }
 
     return result
+}
+
+export async function deleteBranches(config: IConfig, branches: IBranch[]): Promise<void> {
+    const bar = progress({})
+    bar.start('正在删除分支...')
+
+    for (const branch of branches) {
+        try {
+            await deleteBranch(config, branch)
+        }
+        finally {
+            bar.advance(1, `${branch.name} 删除`)
+        }
+    }
+
+    bar.stop('删除完成。')
 }
