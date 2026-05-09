@@ -63,11 +63,13 @@ export async function deleteBranch(config: IConfig, branch: IBranch): Promise<vo
 
     if (branch.location.local)
         commands.push(`git branch -D ${branch.name}`)
-    if (branch.location.remote)
-        commands.push(`git push origin --delete ${branch.name}`)
+    if (branch.location.remote) {
+        commands.push(`git branch -D -r origin/${branch.name}`)
+        commands.push(`git push origin :${branch.name}`)
+    }
 
     const command = commands.join(' && ')
-    // console.log(command)
+    console.log(command)
     await x('sh', ['-c', command], {
         nodeOptions: {
             cwd: config.cwd,
