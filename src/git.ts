@@ -1,4 +1,4 @@
-import type { IConfig, IBranch } from './types'
+import type { IBranch, IConfig } from './types'
 import { x } from 'tinyexec'
 
 async function git(config: IConfig, args: string): Promise<string> {
