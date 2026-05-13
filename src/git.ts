@@ -45,6 +45,9 @@ export async function getDefaultBranch(config: IConfig): Promise<string> {
 
 export async function getBranches(config: IConfig): Promise<IBranch[]> {
     const defaultBranch = await getDefaultBranch(config)
+
+    await git(config, `checkout ${defaultBranch}`)
+
     const locals = await getLocalBranches(config)
     const remotes = await getRemoteBranches(config)
 
