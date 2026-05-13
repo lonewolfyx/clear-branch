@@ -1,6 +1,6 @@
 import type { IBranch, IConfig } from './types'
 import * as process from 'node:process'
-import { cancel, confirm, isCancel, multiselect, progress } from '@clack/prompts'
+import { cancel, isCancel, multiselect, progress } from '@clack/prompts'
 import { deleteBranch } from '@/git.ts'
 
 function getLocationHint(location: IBranch['location']): string {
@@ -30,21 +30,6 @@ export async function selectBranches(branches: IBranch[]): Promise<IBranch[]> {
     }
 
     return result as IBranch[]
-}
-
-export async function confirmBranches(branches: IBranch[]): Promise<boolean> {
-    const list = branches.map(b => `${b.name} {${getLocationHint(b.location)}}`).join('\n')
-
-    const result = await confirm({
-        message: `Confirm deletion of the following branches?\n${list}`,
-    }) as boolean
-
-    if (isCancel(result) || !result) {
-        cancel('Operation cancelled.')
-        process.exit(1)
-    }
-
-    return result
 }
 
 export async function deleteBranches(config: IConfig, branches: IBranch[]): Promise<void> {

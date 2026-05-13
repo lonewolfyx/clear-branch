@@ -1,8 +1,10 @@
+import process from 'node:process'
+import { cancel, confirm, isCancel } from '@clack/prompts'
 import { createMain, defineCommand } from 'citty'
 import { args } from '@/args.ts'
 import { resolveConfig } from '@/config.ts'
 import { getBranches } from '@/git.ts'
-import { confirmBranches, deleteBranches, selectBranches } from '@/prompt.ts'
+import { deleteBranches, selectBranches } from '@/prompt.ts'
 import { description, name, version } from '../package.json'
 
 const command = defineCommand({
@@ -29,7 +31,14 @@ const command = defineCommand({
 
         const selected = await selectBranches(branches)
 
-        const confirmed = await confirmBranches(selected)
+        const confirmed = await confirm({
+            message: `Confirm deletion of the following branches?`,
+        }) as boolean
+
+        if (isCancel(confirmed) || !confirmed) {
+            cancel('Operation cancelled.')
+            process.exit(1)
+        }
 
         if (confirmed)
             await deleteBranches(config, selected)
