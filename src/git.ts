@@ -30,21 +30,34 @@ export async function getRemoteBranches(config: IConfig): Promise<string[]> {
         : []
 }
 
+export async function getDefaultBranch(config: IConfig): Promise<string> {
+    const result = await x('sh', [
+        '-c',
+        'git ls-remote --symref origin HEAD | sed -n \'s|ref: refs/heads/||p\' | awk \'{print $1}\'',
+    ], {
+        nodeOptions: {
+            cwd: config.cwd,
+        },
+    })
+
+    return result.stdout.trim()
+}
+
 export async function getBranches(config: IConfig): Promise<IBranch[]> {
-    const current = await getCurrentBranch(config)
+    const defaultBranch = await getDefaultBranch(config)
     const locals = await getLocalBranches(config)
     const remotes = await getRemoteBranches(config)
 
     const map = new Map<string, IBranch>()
 
     for (const name of locals) {
-        if (name === current)
+        if (name === defaultBranch)
             continue
         map.set(name, { name, location: { local: true, remote: false } })
     }
 
     for (const name of remotes) {
-        if (name === current)
+        if (name === defaultBranch)
             continue
         const existing = map.get(name)
         if (existing) {
