@@ -1,5 +1,5 @@
 import process from 'node:process'
-import { cancel, confirm, intro, isCancel, outro } from '@clack/prompts'
+import { cancel, confirm, intro, isCancel, outro, spinner } from '@clack/prompts'
 import { createMain, defineCommand } from 'citty'
 import pc from 'picocolors'
 import { args } from '@/args.ts'
@@ -23,12 +23,16 @@ const command = defineCommand({
     args,
     async run({ args }) {
         const config = resolveConfig(args)
+
+        const s = spinner()
+        s.start('Retrieving branch list...')
         const branches = await getBranches(config)
 
         if (branches.length === 0) {
-            console.log('No branches found to delete.')
-            return
+            s.stop('No branches found to delete')
+            process.exit(1)
         }
+        s.stop(`Find ${pc.red(branches.length)} branches`)
 
         const selected = await selectBranches(branches)
 
