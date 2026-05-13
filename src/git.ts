@@ -75,19 +75,11 @@ export async function getBranches(config: IConfig): Promise<IBranch[]> {
 }
 
 export async function deleteBranch(config: IConfig, branch: IBranch): Promise<void> {
-    const commands: string[] = []
-
-    if (branch.location.local)
-        commands.push(`git branch -D ${branch.name}`)
-    if (branch.location.remote) {
-        commands.push(`git push origin --delete ${branch.name}`)
+    if (branch.location.local) {
+        await git(config, `branch -D ${branch.name}`)
     }
 
-    const command = commands.join(' && ')
-
-    await x('sh', ['-c', command], {
-        nodeOptions: {
-            cwd: config.cwd,
-        },
-    })
+    if (branch.location.remote) {
+        await git(config, `push origin --delete ${branch.name}`)
+    }
 }
