@@ -48,7 +48,11 @@ export async function confirmBranches(branches: IBranch[]): Promise<boolean> {
 }
 
 export async function deleteBranches(config: IConfig, branches: IBranch[]): Promise<void> {
-    const bar = progress({})
+    const bar = progress({
+        indicator: 'timer',
+        style: 'block',
+        max: branches.length,
+    })
     bar.start('Deleting branches...')
 
     for (const branch of branches) {
