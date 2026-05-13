@@ -1,6 +1,7 @@
 import process from 'node:process'
-import { cancel, confirm, isCancel } from '@clack/prompts'
+import { cancel, confirm, intro, isCancel, outro } from '@clack/prompts'
 import { createMain, defineCommand } from 'citty'
+import pc from 'picocolors'
 import { args } from '@/args.ts'
 import { resolveConfig } from '@/config.ts'
 import { getBranches } from '@/git.ts'
@@ -14,10 +15,10 @@ const command = defineCommand({
         description,
     },
     setup() {
-        console.log('Setup')
+        intro(pc.bgCyan(` ${name} [v${version}]`))
     },
     cleanup() {
-        console.log('Cleanup')
+        outro('Done.')
     },
     args,
     async run({ args }) {
