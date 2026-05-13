@@ -68,7 +68,7 @@ export async function deleteBranch(config: IConfig, branch: IBranch): Promise<vo
     }
 
     const command = commands.join(' && ')
-    console.log(command)
+
     await x('sh', ['-c', command], {
         nodeOptions: {
             cwd: config.cwd,
