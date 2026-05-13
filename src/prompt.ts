@@ -21,7 +21,7 @@ export async function selectBranches(branches: IBranch[]): Promise<IBranch[]> {
     const result = await multiselect({
         message: 'Select branches to delete (space to select, enter to confirm)',
         options,
-        required: false,
+        required: true,
     })
 
     if (isCancel(result)) {
