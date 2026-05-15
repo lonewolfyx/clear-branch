@@ -41,12 +41,8 @@ export async function deleteBranches(config: IConfig, branches: IBranch[]): Prom
     bar.start('Deleting branches...')
 
     for (const branch of branches) {
-        try {
-            await deleteBranch(config, branch)
-        }
-        finally {
-            bar.advance(1, `${branch.name} deleted`)
-        }
+        bar.advance(1, `${branch.name} deleted`)
+        await deleteBranch(config, branch)
     }
 
     bar.stop('Deletion completed.')
