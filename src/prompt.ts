@@ -1,6 +1,7 @@
 import type { IBranch, IConfig } from './types'
 import * as process from 'node:process'
 import { cancel, isCancel, multiselect, progress } from '@clack/prompts'
+import pc from 'picocolors'
 import { deleteBranch } from '@/git.ts'
 
 function getLocationHint(location: IBranch['location']): string {
@@ -41,7 +42,7 @@ export async function deleteBranches(config: IConfig, branches: IBranch[]): Prom
     bar.start('Deleting branches...')
 
     for (const branch of branches) {
-        bar.advance(1, `${branch.name} deleted`)
+        bar.advance(1, `Deleting branch... ${pc.red(branch.name)}`)
         await deleteBranch(config, branch)
     }
 
