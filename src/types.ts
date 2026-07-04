@@ -9,6 +9,7 @@ export type CommandArgs = ParsedArgs<DeepWriteable<typeof args>>
 
 export interface IConfig {
     cwd: string
+    all: boolean
 }
 
 export interface IBranch {
