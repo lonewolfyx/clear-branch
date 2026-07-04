@@ -34,19 +34,24 @@ const command = defineCommand({
         }
         s.stop(`Find ${pc.red(branches.length)} branches`)
 
-        const selected = await selectBranches(branches)
-
-        const confirmed = await confirm({
-            message: `Confirm deletion of the following branches?`,
-        }) as boolean
-
-        if (isCancel(confirmed) || !confirmed) {
-            cancel('Operation cancelled.')
-            process.exit(1)
+        if (config.all) {
+            await deleteBranches(config, branches)
         }
+        else {
+            const selected = await selectBranches(branches)
 
-        if (confirmed)
-            await deleteBranches(config, selected)
+            const confirmed = await confirm({
+                message: `Confirm deletion of the following branches?`,
+            }) as boolean
+
+            if (isCancel(confirmed) || !confirmed) {
+                cancel('Operation cancelled.')
+                process.exit(1)
+            }
+
+            if (confirmed)
+                await deleteBranches(config, selected)
+        }
     },
 })
 
