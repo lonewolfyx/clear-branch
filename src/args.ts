@@ -5,4 +5,10 @@ export const args = {
         alias: 'c',
         default: process.cwd(),
     },
+    all: {
+        type: 'boolean',
+        description: 'Delete all branches',
+        alias: 'a',
+        default: false,
+    },
 } as const
